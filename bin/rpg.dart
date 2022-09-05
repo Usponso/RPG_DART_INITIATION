@@ -43,6 +43,9 @@ void main(List<String> arguments) {
       order[0].reduceCD();
     }
     order[1].hp -= order[0].attack();
+    if(order[1].hp <= 0){
+      break;
+    }
     order[0].finTour();
 
     if((order[1].hp<=order[1].hpMax*0.3)){
