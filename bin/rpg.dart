@@ -2,6 +2,10 @@ import 'package:rpg/rpg.dart' as rpg;
 import 'dart:math';
 
 void main(List<String> arguments) {
+  play();
+}
+
+void play(){
   print("RPG GAME");
 
   rpg.Character c1 = rpg.Character("Toto", 100, 100, 100, 100, 5);
@@ -11,7 +15,10 @@ void main(List<String> arguments) {
 
   int cpt = 1;
 
+  bool verif;
+
   while(c1.hp > 0 && c2.hp > 0){
+    verif = false;
 
     print("VERIF HP : ${c1.name} : ${c1.hp}HP - ${c2.name} : ${c2.hp}HP");
     int coinflip = Random().nextInt(2);
@@ -33,34 +40,41 @@ void main(List<String> arguments) {
     if((order[0].hp<=order[0].hpMax*0.3)){
       if(order[0].mana >= order[0].manaMax){
         order[0].heal();
+        verif = true;
       }
     }
-    if(order[0].checkUlt()){
-      print("🌟 ${order[0].name} ult 🌟");
+    
+    if(!verif){
+      if(order[0].checkUlt()){
+        print("🌟 ${order[0].name} ult 🌟");
+        order[1].hp -= order[0].attack();
+        order[0].cdUlt = 5;
+      }else{
+        order[0].reduceCD();
+      }
       order[1].hp -= order[0].attack();
-      order[0].cdUlt = 5;
-    }else{
-      order[0].reduceCD();
-    }
-    order[1].hp -= order[0].attack();
-    if(order[1].hp <= 0){
-      break;
     }
     order[0].finTour();
+
+    verif = false;
 
     if((order[1].hp<=order[1].hpMax*0.3)){
       if(order[1].mana >= order[1].manaMax){
         order[1].heal();
+        verif = true;
       }
     }
-    if(order[1].checkUlt()){
-      print("🌟 ${order[1].name} ult 🌟");
+    
+    if(!verif){
+      if(order[1].checkUlt()){
+        print("🌟 ${order[1].name} ult 🌟");
+        order[0].hp -= order[1].attack();
+        order[1].cdUlt = 5;
+      }else{
+        order[1].reduceCD();
+      }
       order[0].hp -= order[1].attack();
-      order[1].cdUlt = 5;
-    }else{
-      order[1].reduceCD();
     }
-    order[0].hp -= order[1].attack();
     order[1].finTour();
 
     cpt++;
