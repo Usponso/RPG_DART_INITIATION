@@ -1,4 +1,4 @@
-import 'package:rpg/rpg.dart';
+import 'package:rpg/character.dart';
 import 'package:test/test.dart';
 
 void main() {

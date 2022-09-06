@@ -1,5 +1,6 @@
-import 'package:rpg/rpg.dart' as rpg;
+import 'package:rpg/character.dart' as rpg;
 import 'dart:math';
+import 'package:rpg/weapon.dart';
 
 void main(List<String> arguments) {
   play();
@@ -8,8 +9,12 @@ void main(List<String> arguments) {
 void play(){
   print("RPG GAME");
 
-  rpg.Character c1 = rpg.Character("Toto", 100, 100, 100, 100, 5);
-  rpg.Character c2 = rpg.Character("Tutu", 80, 80, 80, 80, 5);
+  Axe axe = Axe("My axe");
+  Sword sword = Sword("Excalibur");
+  Bow bow = Bow("My bow");
+
+  rpg.Character c1 = rpg.Character("Toto", 100, 100, 100, 100, 5, axe);
+  rpg.Character c2 = rpg.Character("Tutu", 80, 80, 80, 80, 5, sword);
 
   List<rpg.Character> order = <rpg.Character>[];
 
@@ -46,13 +51,12 @@ void play(){
     
     if(!verif){
       if(order[0].checkUlt()){
-        print("🌟 ${order[0].name} ult 🌟");
-        order[1].hp -= order[0].attack();
+        order[1].hp -= order[0].ult();
         order[0].cdUlt = 5;
       }else{
+        order[1].hp -= order[0].attack();
         order[0].reduceCD();
       }
-      order[1].hp -= order[0].attack();
     }
     order[0].finTour();
 
@@ -67,13 +71,12 @@ void play(){
     
     if(!verif){
       if(order[1].checkUlt()){
-        print("🌟 ${order[1].name} ult 🌟");
-        order[0].hp -= order[1].attack();
+        order[0].hp -= order[1].ult();
         order[1].cdUlt = 5;
       }else{
+        order[0].hp -= order[1].attack();
         order[1].reduceCD();
       }
-      order[0].hp -= order[1].attack();
     }
     order[1].finTour();
 
